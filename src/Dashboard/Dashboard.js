@@ -1,9 +1,24 @@
+import { styled } from "@mui/material/styles";
+import { CircularProgress, Grid, Paper } from "@mui/material";
 import { useEffect, useState } from "react";
+import DashboardCard from "./DashboardCard";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  boxShadow: "rgba(0, 0, 0, 0.25) 0px 1px 4px 0px !important",
+  borderRadius: "20px",
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  maxWidth: "360px",
+}));
 
 export default function Dashboard() {
   const [jdData, setJdData] = useState({});
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   useEffect(() => {
     //handleScroll();
     fetchData();
@@ -68,7 +83,7 @@ export default function Dashboard() {
         let myData = {
           ...jdData,
           jdList: jdData.jdList
-            ? [...jdData.jdList, result.jdList]
+            ? jdData.jdList.concat(result.jdList)
             : result.jdList,
           totalCount: result.totalCount,
         };
@@ -78,8 +93,28 @@ export default function Dashboard() {
         setOffset(offset + 10);
         //this will stop the loading state after successfully fetching the data
         setIsLoading(false);
+        setIsDataFetched(true);
       })
+
       .catch((error) => console.error(error));
   };
-  return <></>;
+  if (!isDataFetched) {
+    return <CircularProgress />;
+  } else {
+    return (
+      <>
+        <Grid container spacing={3}>
+          {jdData.jdList.map((val) => {
+            return (
+              <Grid item xs={12} md={6} lg={4}>
+                <Item className="main-item">
+                  <DashboardCard data={val} />
+                </Item>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </>
+    );
+  }
 }

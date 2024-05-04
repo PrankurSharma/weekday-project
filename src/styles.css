@@ -2,3 +2,38 @@
   font-family: sans-serif;
   text-align: center;
 }
+.info-container {
+  margin-top: 10px;
+}
+.info-container > h3 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+  color: #8b8b8b;
+  text-align: left;
+}
+.info-container > h2 {
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  font-weight: 400;
+  color: #0d0d0d;
+  margin: 0;
+}
+.easy-apply {
+  width: 100% !important;
+  background-color: rgb(85, 239, 196) !important;
+  color: rgb(0, 0, 0) !important;
+  font-weight: 500 !important;
+  padding: 8px 18px !important;
+  margin-bottom: 5px !important;
+}
+.main-item:hover {
+  transition: all 0.2s ease-in-out !important;
+  transform: scale(1.01);
+}
+.main-card {
+  border-radius: 20px;
+  box-shadow: none !important;
+}
