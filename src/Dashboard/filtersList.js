@@ -210,16 +210,40 @@ let rolesList = [
     isHeading: false,
   },
 ];
-let experienceList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let experienceList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 let locationsList = [
-  "Delhi NCR",
-  "Bangalore",
-  "Mumbai",
-  "Hyderabad",
-  "Chennai",
-  "Kolkata",
-  "Pune",
-  "Remote",
+  {
+    title: "Delhi NCR",
+    type: "On-site",
+  },
+  {
+    title: "Bangalore",
+    type: "On-site",
+  },
+  {
+    title: "Mumbai",
+    type: "On-site",
+  },
+  {
+    title: "Hyderabad",
+    type: "On-site",
+  },
+  {
+    title: "Chennai",
+    type: "On-site",
+  },
+  {
+    title: "Kolkata",
+    type: "On-site",
+  },
+  {
+    title: "Pune",
+    type: "On-site",
+  },
+  {
+    title: "Remote",
+    type: "Remote",
+  },
 ];
 
 let typesList = ["On-site", "Remote"];

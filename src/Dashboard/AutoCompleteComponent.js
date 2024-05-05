@@ -35,7 +35,13 @@ export default function AutocompleteComponent({
         console.log("Event: ", id, newValue);
         setAllFilters({
           ...allFilters,
-          [id]: newValue,
+          [id]: newValue
+            ? id === "minJdSalary" || id === "minExp"
+              ? parseInt(newValue)
+              : newValue
+            : id === "minExp" || id === "minJdSalary"
+              ? -1
+              : "",
         });
         //setSelectedData(newValue);
       }}

@@ -163,6 +163,14 @@ export default function DashboardCard({ data }) {
             <a className="job-details-link" onClick={handleOpen}>
               View Job
             </a>
+            <Modal
+              open={openModal}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <ModalContent data={data} />
+            </Modal>
           </Box>
           {data.minExp && (
             <div className="info-container">
@@ -193,14 +201,6 @@ export default function DashboardCard({ data }) {
           </Button>
         </Box>
       </Card>
-      <Modal
-        open={openModal}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <ModalContent data={data} />
-      </Modal>
     </>
   );
 }

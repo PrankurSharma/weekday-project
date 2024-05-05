@@ -41,35 +41,34 @@ export default function DashboardFilters({
           let filteredArray = [];
           filteredArray = filteredObj.jdList.filter((val) => {
             console.log("ALL FILTERS VAL: ", allFilters[key], key);
-            //if we are setting the remote filter, we have to compare it using the locations list.
-            if (key === "remote") {
-              //if selected value is remote work, filter out all the values from the location list that matches remote
-              if (val["location"] === "remote") {
-                return allFilters[key]
-                  .map((x) => {
-                    return x.toLowerCase();
-                  })
-                  .includes(val["location"]);
-              }
-              //Otherwise for on site work, any value in the locations list will not be equal to On site. So, we have to apply the condition that it should not match with On-site as well as remote.
-              //Consideration: If a location other than remote is mentioned, it is considered on site
-              else {
-                console.log("Location filter: ", val["location"]);
-                return (
-                  !allFilters[key]
-                    .map((x) => {
-                      return x.toLowerCase();
-                    })
-                    .includes(val["location"]) && val["location"] !== "remote"
-                );
-              }
-            } else {
+            //we are applying common logic for all the other filters except for remote work. We will normally check if the given job matches the option selected.
+            if (key !== "remote") {
               return allFilters[key]
                 .map((x) => {
                   return x.title ? x.title.toLowerCase() : x.toLowerCase();
                 })
                 .includes(val[key]);
             }
+            //Changed logic: For on site work, we will loop though the filters applied(Remote/On site) and go for another loop on the locations list.
+            //I have added a type key in the locations list which denotes On-site or Remote. I will filter out all the values that match the given filters from the locations list first.
+            //Then, I will filter out the job records if the location of that job matches with the filtered locations list. If it does, I will show the result, otherwise the result gets ignored.
+            else {
+              let valReturned = false;
+              allFilters[key].map((k) => {
+                if (
+                  locationsList
+                    .filter((x) => {
+                      return k.toLowerCase() === x.type.toLowerCase();
+                    })
+                    .map((v) => v.title.toLowerCase())
+                    .includes(val["location"])
+                ) {
+                  valReturned = true;
+                }
+              });
+              return valReturned;
+            }
+            //}
           });
           //setting isFiltered to true
           isFiltered = true;
@@ -155,7 +154,7 @@ export default function DashboardFilters({
             allFilters={allFilters}
             setAllFilters={setAllFilters}
             placeholder={"Location"}
-            data={locationsList}
+            data={locationsList.map((val) => val.title)}
             isMulti={true}
           />
         </Box>

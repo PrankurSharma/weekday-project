@@ -171,9 +171,9 @@ export default function Dashboard() {
         />
         <Grid container spacing={3} style={{ padding: "0 20px 20px" }}>
           {filteredJdData.jdList && filteredJdData.jdList.length > 0 ? (
-            filteredJdData.jdList.map((val) => {
+            filteredJdData.jdList.map((val, idx) => {
               return (
-                <Grid item xs={12} md={6} lg={4}>
+                <Grid item xs={12} md={6} lg={4} key={idx}>
                   <Item className="main-item">
                     <DashboardCard data={val} />
                   </Item>
@@ -183,9 +183,9 @@ export default function Dashboard() {
           ) : checkNoData(allFilters, filteredJdData) ? (
             <NoJobsFound />
           ) : (
-            jdData.jdList.map((val) => {
+            jdData.jdList.map((val, idx) => {
               return (
-                <Grid item xs={12} md={6} lg={4}>
+                <Grid item xs={12} md={6} lg={4} key={idx}>
                   <Item className="main-item">
                     <DashboardCard data={val} />
                   </Item>
