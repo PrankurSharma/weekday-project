@@ -75,7 +75,7 @@ export default function DashboardCard({ data }) {
                     width: "fit-content",
                   }}
                 >
-                  {data.jobRole}
+                  {data.jobRole ? data.jobRole : "NA"}
                 </h2>
               </div>
               <p
@@ -87,7 +87,7 @@ export default function DashboardCard({ data }) {
                   width: "fit-content",
                 }}
               >
-                {data.location}
+                {data.location ? data.location : "NA"}
               </p>
             </div>
           </Box>
@@ -102,8 +102,8 @@ export default function DashboardCard({ data }) {
               width: "fit-content",
             }}
           >
-            Estimated Salary: ${data.minJdSalary ? data.minJdSalary : "0"}
-            &nbsp; -&nbsp;{data.maxJdSalary ? data.maxJdSalary : "0"}
+            Estimated Salary: {data.minJdSalary ? "$" + data.minJdSalary : "NA"}
+            &nbsp; -&nbsp;{data.maxJdSalary ? data.maxJdSalary : "NA"}
           </p>
           <Box
             sx={{
@@ -136,7 +136,7 @@ export default function DashboardCard({ data }) {
                   fontSize: "14px",
                 }}
               >
-                {data.jobDetailsFromCompany}
+                {data.jobDetailsFromCompany ? data.jobDetailsFromCompany : "NA"}
               </Box>
             </Box>
           </Box>
@@ -146,7 +146,7 @@ export default function DashboardCard({ data }) {
           {
             <div className="info-container">
               <h3>Minimum Experience</h3>
-              <h2>{data.minExp ? data.minExp : "0"} years</h2>
+              <h2>{data.minExp ? data.minExp + "years" : "NA"}</h2>
             </div>
           }
         </CardContent>
