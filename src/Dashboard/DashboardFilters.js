@@ -123,11 +123,20 @@ export default function DashboardFilters({
             setAllFilters={setAllFilters}
             placeholder={"Roles"}
             data={rolesList}
+            isMulti={true}
           />
         </Box>
         <Box className="filter-box">
           <p>{allFilters.minExp !== -1 ? "Experience" : ""}</p>
-          <Autocomplete
+          <MultiSelect
+            id="minExp"
+            allFilters={allFilters}
+            setAllFilters={setAllFilters}
+            placeholder={"Experience"}
+            isMulti={false}
+            data={experienceList}
+          />
+          {/* <Autocomplete
             disablePortal
             id="minExp"
             options={experienceList}
@@ -141,7 +150,7 @@ export default function DashboardFilters({
             renderInput={(params) => (
               <TextField {...params} placeholder="Experience" />
             )}
-          />
+          /> */}
         </Box>
         <Box className="filter-box">
           <p>{allFilters.remote.length > 0 ? "Remote" : ""}</p>
@@ -151,6 +160,7 @@ export default function DashboardFilters({
             setAllFilters={setAllFilters}
             placeholder={"Remote"}
             data={typesList}
+            isMulti={true}
           />
         </Box>
         <Box className="filter-box">
@@ -161,17 +171,40 @@ export default function DashboardFilters({
             setAllFilters={setAllFilters}
             placeholder={"Location"}
             data={locationsList}
+            isMulti={true}
           />
         </Box>
         <Box className="filter-box">
           <p>
             {allFilters.minJdSalary !== -1 ? "Minimum Base Pay Salary" : ""}
           </p>
-          <Autocomplete
+          <MultiSelect
+            id="minJdSalary"
+            allFilters={allFilters}
+            setAllFilters={setAllFilters}
+            placeholder={"Minimum Expected Salary"}
+            isMulti={false}
+            data={salaryList}
+          />
+          {/* <Autocomplete
             disablePortal
             id="minJdSalary"
             options={salaryList}
-            sx={{ width: 300 }}
+            popupIcon={
+              <div className="arrow-wrap">
+                <ExpandMoreIcon />
+              </div>
+            }
+            sx={{
+              width: "300px",
+              "& .MuiAutocomplete-popupIndicator": {
+                transform: "rotate(0)",
+                transition: "none",
+              },
+              "& .MuiAutocomplete-popupIndicator:hover": {
+                transition: "none",
+              },
+            }}
             onChange={(event, newValue) => {
               setAllFilters({
                 ...allFilters,
@@ -181,7 +214,7 @@ export default function DashboardFilters({
             renderInput={(params) => (
               <TextField {...params} placeholder="Minimum Expected Salary" />
             )}
-          />
+          /> */}
         </Box>
         <Box className="filter-box">
           <p>{allFilters.companyName !== "" ? "Company Name" : ""}</p>

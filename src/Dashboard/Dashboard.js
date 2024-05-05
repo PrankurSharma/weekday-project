@@ -12,9 +12,9 @@ const Item = styled(Paper)(({ theme }) => ({
   borderRadius: "20px",
   textAlign: "center",
   color: theme.palette.text.secondary,
-  maxWidth: "360px",
+  maxWidth: "460px", //default width was 360px. I have changed it in order to fit it properly on the page.
   marginTop: "8px",
-  height: "539.55px",
+  height: "615px",
 }));
 
 export default function Dashboard() {
