@@ -1,12 +1,9 @@
 import {
   Avatar,
-  Backdrop,
   Box,
   Button,
   Card,
   CardContent,
-  CardHeader,
-  Link,
   Typography,
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
@@ -169,7 +166,9 @@ export default function DashboardCard({ data }) {
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
-              <ModalContent data={data} />
+              <Box className="modal-box">
+                <ModalContent data={data} />
+              </Box>
             </Modal>
           </Box>
           {data.minExp && (
