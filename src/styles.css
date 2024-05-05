@@ -159,3 +159,11 @@ input {
   line-height: 1.5;
   color: rgb(255, 255, 255);
 }
+.no-jobs-box {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  padding: 40px;
+  width: 100%;
+}

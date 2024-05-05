@@ -6,7 +6,7 @@ import {
   salaryList,
   typesList,
 } from "./filtersList";
-import MultiSelect from "./MultiSelect";
+import AutoCompleteComponent from "./AutoCompleteComponent";
 import { useEffect, useRef } from "react";
 
 export default function DashboardFilters({
@@ -117,7 +117,7 @@ export default function DashboardFilters({
       <div className="filters-div">
         <Box className="filter-box">
           <p>{allFilters.jobRole.length > 0 ? "Roles" : ""}</p>
-          <MultiSelect
+          <AutoCompleteComponent
             id="jobRole"
             allFilters={allFilters}
             setAllFilters={setAllFilters}
@@ -128,7 +128,7 @@ export default function DashboardFilters({
         </Box>
         <Box className="filter-box">
           <p>{allFilters.minExp !== -1 ? "Experience" : ""}</p>
-          <MultiSelect
+          <AutoCompleteComponent
             id="minExp"
             allFilters={allFilters}
             setAllFilters={setAllFilters}
@@ -136,25 +136,10 @@ export default function DashboardFilters({
             isMulti={false}
             data={experienceList}
           />
-          {/* <Autocomplete
-            disablePortal
-            id="minExp"
-            options={experienceList}
-            sx={{ width: 300 }}
-            onChange={(event, newValue) => {
-              setAllFilters({
-                ...allFilters,
-                minExp: newValue ? newValue : -1,
-              });
-            }}
-            renderInput={(params) => (
-              <TextField {...params} placeholder="Experience" />
-            )}
-          /> */}
         </Box>
         <Box className="filter-box">
           <p>{allFilters.remote.length > 0 ? "Remote" : ""}</p>
-          <MultiSelect
+          <AutoCompleteComponent
             id="remote"
             allFilters={allFilters}
             setAllFilters={setAllFilters}
@@ -165,7 +150,7 @@ export default function DashboardFilters({
         </Box>
         <Box className="filter-box">
           <p>{allFilters.location.length > 0 ? "Location" : ""}</p>
-          <MultiSelect
+          <AutoCompleteComponent
             id="location"
             allFilters={allFilters}
             setAllFilters={setAllFilters}
@@ -178,43 +163,14 @@ export default function DashboardFilters({
           <p>
             {allFilters.minJdSalary !== -1 ? "Minimum Base Pay Salary" : ""}
           </p>
-          <MultiSelect
+          <AutoCompleteComponent
             id="minJdSalary"
             allFilters={allFilters}
             setAllFilters={setAllFilters}
-            placeholder={"Minimum Expected Salary"}
+            placeholder={"Minimum Base Pay Salary"}
             isMulti={false}
             data={salaryList}
           />
-          {/* <Autocomplete
-            disablePortal
-            id="minJdSalary"
-            options={salaryList}
-            popupIcon={
-              <div className="arrow-wrap">
-                <ExpandMoreIcon />
-              </div>
-            }
-            sx={{
-              width: "300px",
-              "& .MuiAutocomplete-popupIndicator": {
-                transform: "rotate(0)",
-                transition: "none",
-              },
-              "& .MuiAutocomplete-popupIndicator:hover": {
-                transition: "none",
-              },
-            }}
-            onChange={(event, newValue) => {
-              setAllFilters({
-                ...allFilters,
-                minJdSalary: newValue ? newValue : -1,
-              });
-            }}
-            renderInput={(params) => (
-              <TextField {...params} placeholder="Minimum Expected Salary" />
-            )}
-          /> */}
         </Box>
         <Box className="filter-box">
           <p>{allFilters.companyName !== "" ? "Company Name" : ""}</p>

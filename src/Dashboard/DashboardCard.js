@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
+import ModalContent from "./ModalContent";
 
 export default function DashboardCard({ data }) {
   const [openModal, setOpenModal] = useState(false);
@@ -21,6 +22,7 @@ export default function DashboardCard({ data }) {
   const handleOpen = () => {
     setOpenModal(true);
   };
+
   return (
     <>
       <Card className="main-card">
@@ -88,6 +90,7 @@ export default function DashboardCard({ data }) {
                       lineHeight: "1.5",
                       width: "fit-content",
                       fontWeight: "400",
+                      textTransform: "capitalize",
                     }}
                   >
                     {data.jobRole}
@@ -103,6 +106,7 @@ export default function DashboardCard({ data }) {
                     marginBottom: "0px",
                     width: "fit-content",
                     lineHeight: "0",
+                    textTransform: "capitalize",
                   }}
                 >
                   {data.location}
@@ -195,26 +199,7 @@ export default function DashboardCard({ data }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box className="modal-box">
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            className="job-des"
-          >
-            Job Description
-          </Typography>
-          <Typography
-            variant="body1"
-            component="p"
-            className="job-details-head"
-          >
-            About Company:
-          </Typography>
-          <Typography variant="body1" component="p" className="job-details">
-            {data.jobDetailsFromCompany}
-          </Typography>
-        </Box>
+        <ModalContent data={data} />
       </Modal>
     </>
   );

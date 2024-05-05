@@ -2,7 +2,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import { rolesList } from "./filtersList";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-export default function MultiSelect({
+export default function AutocompleteComponent({
   id,
   placeholder,
   allFilters,

@@ -3,6 +3,7 @@ import { CircularProgress, Grid, Paper } from "@mui/material";
 import { useEffect, useState } from "react";
 import DashboardCard from "./DashboardCard";
 import DashboardFilters from "./DashboardFilters";
+import NoJobsFound from "./NoJobsFound";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -169,27 +170,29 @@ export default function Dashboard() {
           setAllFilters={setAllFilters}
         />
         <Grid container spacing={3} style={{ padding: "0 20px 20px" }}>
-          {filteredJdData.jdList && filteredJdData.jdList.length > 0
-            ? filteredJdData.jdList.map((val) => {
-                return (
-                  <Grid item xs={12} md={6} lg={4}>
-                    <Item className="main-item">
-                      <DashboardCard data={val} />
-                    </Item>
-                  </Grid>
-                );
-              })
-            : checkNoData(allFilters, filteredJdData)
-              ? "No data"
-              : jdData.jdList.map((val) => {
-                  return (
-                    <Grid item xs={12} md={6} lg={4}>
-                      <Item className="main-item">
-                        <DashboardCard data={val} />
-                      </Item>
-                    </Grid>
-                  );
-                })}
+          {filteredJdData.jdList && filteredJdData.jdList.length > 0 ? (
+            filteredJdData.jdList.map((val) => {
+              return (
+                <Grid item xs={12} md={6} lg={4}>
+                  <Item className="main-item">
+                    <DashboardCard data={val} />
+                  </Item>
+                </Grid>
+              );
+            })
+          ) : checkNoData(allFilters, filteredJdData) ? (
+            <NoJobsFound />
+          ) : (
+            jdData.jdList.map((val) => {
+              return (
+                <Grid item xs={12} md={6} lg={4}>
+                  <Item className="main-item">
+                    <DashboardCard data={val} />
+                  </Item>
+                </Grid>
+              );
+            })
+          )}
         </Grid>
         {console.log("Is loading: ", isLoading)}
         {isLoading && <CircularProgress sx={{ marginTop: "20px" }} />}
