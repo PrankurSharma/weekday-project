@@ -59,7 +59,7 @@ export default function DashboardFilters({
           console.log("Else entered...");
         }
       } else {
-        console.log("All filters key: ", allFilters[key]);
+        console.log("All filters key: ", allFilters, key);
         if (allFilters[key] !== "" && allFilters[key] !== -1) {
           let filteredArray = filteredObj.jdList.filter((val) => {
             return key === "companyName"
@@ -90,58 +90,88 @@ export default function DashboardFilters({
   };
   return (
     <>
-      <div style={{ display: "flex" }}>
-        <MultiSelect
-          id="jobRole"
-          allFilters={allFilters}
-          setAllFilters={setAllFilters}
-          placeholder={"Roles"}
-          data={rolesList}
-        />
-        <Autocomplete
-          disablePortal
-          id="minExp"
-          options={experienceList}
-          sx={{ width: 300 }}
-          onChange={(event, newValue) => {
-            setAllFilters({
-              ...allFilters,
-              minExp: newValue ? newValue : -1,
-            });
-          }}
-          renderInput={(params) => (
-            <TextField {...params} placeholder="Experience" />
-          )}
-        />
-        <MultiSelect
-          id="remote"
-          allFilters={allFilters}
-          setAllFilters={setAllFilters}
-          placeholder={"Remote"}
-          data={typesList}
-        />
-        <MultiSelect
-          id="location"
-          allFilters={allFilters}
-          setAllFilters={setAllFilters}
-          placeholder={"Location"}
-          data={locationsList}
-        />
-        <Autocomplete
-          disablePortal
-          id="minJdSalary"
-          options={salaryList}
-          sx={{ width: 300 }}
-          onChange={(event, newValue) => {
-            setAllFilters({
-              ...allFilters,
-              minJdSalary: newValue ? newValue : -1,
-            });
-          }}
-          renderInput={(params) => (
-            <TextField {...params} placeholder="Minimum Expected Salary" />
-          )}
-        />
+      <div className="filters-div">
+        <Box className="filter-box">
+          <p>{allFilters.jobRole.length > 0 ? "Roles" : ""}</p>
+          <MultiSelect
+            id="jobRole"
+            allFilters={allFilters}
+            setAllFilters={setAllFilters}
+            placeholder={"Roles"}
+            data={rolesList}
+          />
+        </Box>
+        <Box className="filter-box">
+          <p>{allFilters.minExp !== -1 ? "Experience" : ""}</p>
+          <Autocomplete
+            disablePortal
+            id="minExp"
+            options={experienceList}
+            sx={{ width: 300 }}
+            onChange={(event, newValue) => {
+              setAllFilters({
+                ...allFilters,
+                minExp: newValue ? newValue : -1,
+              });
+            }}
+            renderInput={(params) => (
+              <TextField {...params} placeholder="Experience" />
+            )}
+          />
+        </Box>
+        <Box className="filter-box">
+          <p>{allFilters.remote.length > 0 ? "Remote" : ""}</p>
+          <MultiSelect
+            id="remote"
+            allFilters={allFilters}
+            setAllFilters={setAllFilters}
+            placeholder={"Remote"}
+            data={typesList}
+          />
+        </Box>
+        <Box className="filter-box">
+          <p>{allFilters.location.length > 0 ? "Location" : ""}</p>
+          <MultiSelect
+            id="location"
+            allFilters={allFilters}
+            setAllFilters={setAllFilters}
+            placeholder={"Location"}
+            data={locationsList}
+          />
+        </Box>
+        <Box className="filter-box">
+          <p>
+            {allFilters.minJdSalary !== -1 ? "Minimum Base Pay Salary" : ""}
+          </p>
+          <Autocomplete
+            disablePortal
+            id="minJdSalary"
+            options={salaryList}
+            sx={{ width: 300 }}
+            onChange={(event, newValue) => {
+              setAllFilters({
+                ...allFilters,
+                minJdSalary: newValue ? newValue : -1,
+              });
+            }}
+            renderInput={(params) => (
+              <TextField {...params} placeholder="Minimum Expected Salary" />
+            )}
+          />
+        </Box>
+        <Box className="filter-box">
+          <p>{allFilters.companyName !== "" ? "Company Name" : ""}</p>
+          <TextField
+            id="companyName"
+            onChange={(event) => {
+              setAllFilters({
+                ...allFilters,
+                [event.target.id]: event.target.value,
+              });
+            }}
+            placeholder="Company Name"
+          />
+        </Box>
       </div>
     </>
   );

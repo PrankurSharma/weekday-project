@@ -98,7 +98,6 @@ export default function DashboardCard({ data }) {
               margin: "8px 0",
               fontWeight: "400",
               color: "rgb(77, 89, 106)",
-              fontFamily: "__LexendFont_7838d2, __LexendFont_Fallback_7838d2",
               lineHeight: "1.43",
               width: "fit-content",
             }}
@@ -156,7 +155,7 @@ export default function DashboardCard({ data }) {
         >
           <Box>
             <Button size="medium" className="easy-apply">
-              Easy Apply
+              &#9889;&nbsp;Easy Apply
             </Button>
           </Box>
         </Box>

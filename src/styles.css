@@ -1,5 +1,5 @@
 .App {
-  font-family: sans-serif;
+  font-family: __LexendFont_7838d2, __LexendFont_Fallback_7838d2;
   text-align: center;
 }
 .info-container {
@@ -30,6 +30,7 @@
   margin-bottom: 5px !important;
   border-radius: 8px !important;
 }
+
 .main-item:hover {
   transition: all 0.2s ease-in-out !important;
   transform: scale(1.01);
@@ -41,4 +42,21 @@
 
 .MuiAutocomplete-root .MuiAutocomplete-tag {
   border-radius: 0;
+}
+.filters-div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  padding: 0 20px 20px;
+}
+.filter-box {
+  margin: 2px 5px 2px 0 !important;
+}
+.filter-box p {
+  text-align: left;
+  margin-bottom: 0;
+  font-size: 13px;
+  margin: 6px 0;
+  font-weight: 500;
 }
