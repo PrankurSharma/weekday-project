@@ -19,7 +19,7 @@ export default function MultiSelect({
         console.log("Event: ", id, newValue);
         setAllFilters({
           ...allFilters,
-          [id === "remote" ? "location" : id]: newValue,
+          [id]: newValue,
         });
         //setSelectedData(newValue);
       }}

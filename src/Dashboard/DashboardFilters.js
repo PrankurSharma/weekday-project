@@ -40,12 +40,36 @@ export default function DashboardFilters({
           //filter out all the elements that are present in the list
           let filteredArray = [];
           filteredArray = filteredObj.jdList.filter((val) => {
-            console.log("ALL FILTERS VAL: ", allFilters[key]);
-            return allFilters[key]
-              .map((x) => {
-                return x.title ? x.title.toLowerCase() : x.toLowerCase();
-              })
-              .includes(val[key]);
+            console.log("ALL FILTERS VAL: ", allFilters[key], key);
+            //if we are setting the remote filter, we have to compare it using the locations list.
+            if (key === "remote") {
+              //if selected value is remote work, filter out all the values from the location list that matches remote
+              if (val["location"] === "remote") {
+                return allFilters[key]
+                  .map((x) => {
+                    return x.toLowerCase();
+                  })
+                  .includes(val["location"]);
+              }
+              //Otherwise for on site work, any value in the locations list will not be equal to On site. So, we have to apply the condition that it should not match with On-site as well as remote.
+              //Consideration: If a location other than remote is mentioned, it is considered on site
+              else {
+                console.log("Location filter: ", val["location"]);
+                return (
+                  !allFilters[key]
+                    .map((x) => {
+                      return x.toLowerCase();
+                    })
+                    .includes(val["location"]) && val["location"] !== "remote"
+                );
+              }
+            } else {
+              return allFilters[key]
+                .map((x) => {
+                  return x.title ? x.title.toLowerCase() : x.toLowerCase();
+                })
+                .includes(val[key]);
+            }
           });
           //setting isFiltered to true
           isFiltered = true;
