@@ -43,13 +43,10 @@ export default function Dashboard() {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
         document.documentElement.offsetHeight &&
-      offset < jdData.totalCount
-      //Un-comment this line if it is required to stop the api calls if the filters are applied but no data was found in the given results. I'm commenting it out because there can be data in the furhter fields which matches the given filters.
-      //&& !checkNoData(allFilters, filteredJdData)
+      //Comment this line if it is not required to stop the api calls if the filters are applied but no data was found in the given results. I'm now un-commenting it because of the requirements of the task. Have also removed No data state
+      !checkNoData(allFilters, filteredJdData)
     ) {
-      setTimeout(() => {
-        fetchData();
-      }, 2000);
+      setIsLoading(true);
     }
   }, [filteredJdData]);
 
@@ -182,6 +179,7 @@ export default function Dashboard() {
                   );
                 })}
         </Grid>
+        {console.log("Is loading: ", isLoading)}
         {isLoading && <CircularProgress sx={{ marginTop: "20px" }} />}
       </>
     );
