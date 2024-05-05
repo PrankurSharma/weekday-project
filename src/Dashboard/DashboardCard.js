@@ -104,7 +104,7 @@ export default function DashboardCard({ data }) {
             }}
           >
             Estimated Salary: ${data.minJdSalary ? data.minJdSalary : "0"}
-            &nbsp; -&nbsp;{data.maxJdSalary}
+            &nbsp; -&nbsp;{data.maxJdSalary ? data.maxJdSalary : "0"}
           </p>
           <Box
             sx={{
@@ -144,10 +144,12 @@ export default function DashboardCard({ data }) {
           <Box>
             <a>Show More</a>
           </Box>
-          <div className="info-container">
-            <h3>Minimum Experience</h3>
-            <h2>{data.minExp} years</h2>
-          </div>
+          {
+            <div className="info-container">
+              <h3>Minimum Experience</h3>
+              <h2>{data.minExp ? data.minExp : "0"} years</h2>
+            </div>
+          }
         </CardContent>
         <Box
           sx={{ padding: "0 15px", display: "flex", flexDirection: "column" }}

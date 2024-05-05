@@ -2,6 +2,7 @@ import { styled } from "@mui/material/styles";
 import { CircularProgress, Grid, Paper } from "@mui/material";
 import { useEffect, useState } from "react";
 import DashboardCard from "./DashboardCard";
+import DashboardFilters from "./DashboardFilters";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -15,10 +16,19 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function Dashboard() {
-  const [jdData, setJdData] = useState({});
-  const [offset, setOffset] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isDataFetched, setIsDataFetched] = useState(false);
+  const [jdData, setJdData] = useState({}); //original data is stored in this state
+  const [filteredJdData, setFilteredJdData] = useState({}); //filtered data is stored in this state
+  const [offset, setOffset] = useState(0); //offset value for fetching data from the api
+  const [isLoading, setIsLoading] = useState(false); //Tells us if the user has reached the bottom of the page while scrolling
+  const [isDataFetched, setIsDataFetched] = useState(false); //Handles initial case when the data is being fetched.
+  const [allFilters, setAllFilters] = useState({
+    jobRole: [],
+    companyName: "",
+    location: [],
+    remote: [],
+    minJdSalary: -1,
+    minExp: -1,
+  }); //Represents all the filters available
   useEffect(() => {
     //handleScroll();
     fetchData();
@@ -34,6 +44,7 @@ export default function Dashboard() {
     console.log("Offset: ", offset, jdData);
     //checking if offset is less than total records in the database. If the offset value exceeds, there is no need to call the api again.
     if (offset < jdData.totalCount) {
+      //Added debouncing to avoid un-necessary api calls
       setTimeout(() => {
         fetchData();
       }, 2000);
@@ -103,16 +114,46 @@ export default function Dashboard() {
   } else {
     return (
       <>
+        <DashboardFilters
+          data={jdData}
+          setData={setJdData}
+          filteredData={filteredJdData}
+          setFilteredData={setFilteredJdData}
+          allFilters={allFilters}
+          setAllFilters={setAllFilters}
+        />
         <Grid container spacing={3}>
-          {jdData.jdList.map((val) => {
-            return (
-              <Grid item xs={12} md={6} lg={4}>
-                <Item className="main-item">
-                  <DashboardCard data={val} />
-                </Item>
-              </Grid>
-            );
-          })}
+          {filteredJdData.jdList && filteredJdData.jdList.length > 0
+            ? filteredJdData.jdList.map((val) => {
+                return (
+                  <Grid item xs={12} md={6} lg={4}>
+                    <Item className="main-item">
+                      <DashboardCard data={val} />
+                    </Item>
+                  </Grid>
+                );
+              })
+            : Object.keys(allFilters).some(
+                  (val) =>
+                    (Array.isArray(allFilters[val]) &&
+                      allFilters[val].length > 0) ||
+                    (!Array.isArray(allFilters[val]) &&
+                      allFilters[val] !== "" &&
+                      allFilters[val] !== -1) ||
+                    (!Array.isArray(allFilters[val]) &&
+                      allFilters[val] !== -1 &&
+                      allFilters[val] !== ""),
+                )
+              ? "No data"
+              : jdData.jdList.map((val) => {
+                  return (
+                    <Grid item xs={12} md={6} lg={4}>
+                      <Item className="main-item">
+                        <DashboardCard data={val} />
+                      </Item>
+                    </Grid>
+                  );
+                })}
         </Grid>
       </>
     );
