@@ -6,7 +6,7 @@ import {
   salaryList,
   typesList,
 } from "./filtersList";
-import MultiSelect from "./MultiSelect";
+import AutoCompleteComponent from "./AutoCompleteComponent";
 import { useEffect, useRef } from "react";
 
 export default function DashboardFilters({
@@ -40,12 +40,36 @@ export default function DashboardFilters({
           //filter out all the elements that are present in the list
           let filteredArray = [];
           filteredArray = filteredObj.jdList.filter((val) => {
-            console.log("ALL FILTERS VAL: ", allFilters[key]);
-            return allFilters[key]
-              .map((x) => {
-                return x.title ? x.title.toLowerCase() : x.toLowerCase();
-              })
-              .includes(val[key]);
+            console.log("ALL FILTERS VAL: ", allFilters[key], key);
+            //if we are setting the remote filter, we have to compare it using the locations list.
+            if (key === "remote") {
+              //if selected value is remote work, filter out all the values from the location list that matches remote
+              if (val["location"] === "remote") {
+                return allFilters[key]
+                  .map((x) => {
+                    return x.toLowerCase();
+                  })
+                  .includes(val["location"]);
+              }
+              //Otherwise for on site work, any value in the locations list will not be equal to On site. So, we have to apply the condition that it should not match with On-site as well as remote.
+              //Consideration: If a location other than remote is mentioned, it is considered on site
+              else {
+                console.log("Location filter: ", val["location"]);
+                return (
+                  !allFilters[key]
+                    .map((x) => {
+                      return x.toLowerCase();
+                    })
+                    .includes(val["location"]) && val["location"] !== "remote"
+                );
+              }
+            } else {
+              return allFilters[key]
+                .map((x) => {
+                  return x.title ? x.title.toLowerCase() : x.toLowerCase();
+                })
+                .includes(val[key]);
+            }
           });
           //setting isFiltered to true
           isFiltered = true;
@@ -59,7 +83,7 @@ export default function DashboardFilters({
           console.log("Else entered...");
         }
       } else {
-        console.log("All filters key: ", allFilters[key]);
+        console.log("All filters key: ", allFilters, key);
         if (allFilters[key] !== "" && allFilters[key] !== -1) {
           let filteredArray = filteredObj.jdList.filter((val) => {
             return key === "companyName"
@@ -90,58 +114,77 @@ export default function DashboardFilters({
   };
   return (
     <>
-      <div style={{ display: "flex" }}>
-        <MultiSelect
-          id="jobRole"
-          allFilters={allFilters}
-          setAllFilters={setAllFilters}
-          placeholder={"Roles"}
-          data={rolesList}
-        />
-        <Autocomplete
-          disablePortal
-          id="minExp"
-          options={experienceList}
-          sx={{ width: 300 }}
-          onChange={(event, newValue) => {
-            setAllFilters({
-              ...allFilters,
-              minExp: newValue ? newValue : -1,
-            });
-          }}
-          renderInput={(params) => (
-            <TextField {...params} placeholder="Experience" />
-          )}
-        />
-        <MultiSelect
-          id="remote"
-          allFilters={allFilters}
-          setAllFilters={setAllFilters}
-          placeholder={"Remote"}
-          data={typesList}
-        />
-        <MultiSelect
-          id="location"
-          allFilters={allFilters}
-          setAllFilters={setAllFilters}
-          placeholder={"Location"}
-          data={locationsList}
-        />
-        <Autocomplete
-          disablePortal
-          id="minJdSalary"
-          options={salaryList}
-          sx={{ width: 300 }}
-          onChange={(event, newValue) => {
-            setAllFilters({
-              ...allFilters,
-              minJdSalary: newValue ? newValue : -1,
-            });
-          }}
-          renderInput={(params) => (
-            <TextField {...params} placeholder="Minimum Expected Salary" />
-          )}
-        />
+      <div className="filters-div">
+        <Box className="filter-box">
+          <p>{allFilters.jobRole.length > 0 ? "Roles" : ""}</p>
+          <AutoCompleteComponent
+            id="jobRole"
+            allFilters={allFilters}
+            setAllFilters={setAllFilters}
+            placeholder={"Roles"}
+            data={rolesList}
+            isMulti={true}
+          />
+        </Box>
+        <Box className="filter-box">
+          <p>{allFilters.minExp !== -1 ? "Experience" : ""}</p>
+          <AutoCompleteComponent
+            id="minExp"
+            allFilters={allFilters}
+            setAllFilters={setAllFilters}
+            placeholder={"Experience"}
+            isMulti={false}
+            data={experienceList}
+          />
+        </Box>
+        <Box className="filter-box">
+          <p>{allFilters.remote.length > 0 ? "Remote" : ""}</p>
+          <AutoCompleteComponent
+            id="remote"
+            allFilters={allFilters}
+            setAllFilters={setAllFilters}
+            placeholder={"Remote"}
+            data={typesList}
+            isMulti={true}
+          />
+        </Box>
+        <Box className="filter-box">
+          <p>{allFilters.location.length > 0 ? "Location" : ""}</p>
+          <AutoCompleteComponent
+            id="location"
+            allFilters={allFilters}
+            setAllFilters={setAllFilters}
+            placeholder={"Location"}
+            data={locationsList}
+            isMulti={true}
+          />
+        </Box>
+        <Box className="filter-box">
+          <p>
+            {allFilters.minJdSalary !== -1 ? "Minimum Base Pay Salary" : ""}
+          </p>
+          <AutoCompleteComponent
+            id="minJdSalary"
+            allFilters={allFilters}
+            setAllFilters={setAllFilters}
+            placeholder={"Minimum Base Pay Salary"}
+            isMulti={false}
+            data={salaryList}
+          />
+        </Box>
+        <Box className="filter-box">
+          <p>{allFilters.companyName !== "" ? "Company Name" : ""}</p>
+          <TextField
+            id="companyName"
+            onChange={(event) => {
+              setAllFilters({
+                ...allFilters,
+                [event.target.id]: event.target.value,
+              });
+            }}
+            placeholder="Company Name"
+          />
+        </Box>
       </div>
     </>
   );

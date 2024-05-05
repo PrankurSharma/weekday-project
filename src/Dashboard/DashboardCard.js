@@ -1,13 +1,28 @@
 import {
+  Avatar,
+  Backdrop,
   Box,
   Button,
   Card,
   CardContent,
   CardHeader,
   Link,
+  Typography,
 } from "@mui/material";
+import Modal from "@mui/material/Modal";
+import { useState } from "react";
+import ModalContent from "./ModalContent";
 
 export default function DashboardCard({ data }) {
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleClose = () => {
+    setOpenModal(false);
+  };
+  const handleOpen = () => {
+    setOpenModal(true);
+  };
+
   return (
     <>
       <Card className="main-card">
@@ -68,44 +83,59 @@ export default function DashboardCard({ data }) {
                 >
                   {data.companyName}
                 </Box>
-                <h2
+                {data.jobRole && (
+                  <h2
+                    style={{
+                      fontSize: "14px",
+                      lineHeight: "1.5",
+                      width: "fit-content",
+                      fontWeight: "400",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {data.jobRole}
+                  </h2>
+                )}
+              </div>
+              {data.location && (
+                <p
                   style={{
-                    fontSize: "14px",
-                    lineHeight: "1.5",
+                    fontSize: "11px",
+                    fontWeight: "500",
+                    marginTop: "5px",
+                    marginBottom: "0px",
                     width: "fit-content",
+                    lineHeight: "0",
+                    textTransform: "capitalize",
                   }}
                 >
-                  {data.jobRole}
-                </h2>
-              </div>
-              <p
-                style={{
-                  fontSize: "11px",
-                  fontWeight: "500",
-                  marginTop: "5px",
-                  marginBottom: "0px",
-                  width: "fit-content",
-                }}
-              >
-                {data.location}
-              </p>
+                  {data.location}
+                </p>
+              )}
             </div>
           </Box>
-          <p
-            className="MuiTypography-root MuiTypography-body2"
+          <Typography
+            variant="body2"
             style={{
               fontSize: "14px",
-              margin: "8px 0",
+              margin: "12px 0",
               fontWeight: "400",
               color: "rgb(77, 89, 106)",
-              fontFamily: "__LexendFont_7838d2, __LexendFont_Fallback_7838d2",
               lineHeight: "1.43",
               width: "fit-content",
             }}
           >
-            Estimated Salary: ${data.minJdSalary ? data.minJdSalary : "0"}
-            &nbsp; -&nbsp;{data.maxJdSalary ? data.maxJdSalary : "0"}
-          </p>
+            Estimated Salary:{" "}
+            {data.minJdSalary
+              ? "$" + data.minJdSalary + `${data.maxJdSalary ? " - " : ""}`
+              : ""}
+            {data.maxJdSalary
+              ? data.minJdSalary
+                ? data.maxJdSalary
+                : "$" + data.maxJdSalary
+              : ""}
+            <span>&#9989;</span>
+          </Typography>
           <Box
             sx={{
               height: "250px",
@@ -115,21 +145,9 @@ export default function DashboardCard({ data }) {
             }}
           >
             <Box>
-              <p
-                className="MuiTypography-root MuiTypography-body2"
-                style={{
-                  margin: "0px",
-                  fontFamily:
-                    "__LexendFont_7838d2, __LexendFont_Fallback_7838d2",
-                  fontSize: "1rem",
-                  lineHeight: "1.5",
-                  fontWeight: "500",
-                  width: "fit-content",
-                  color: "#0d0d0d",
-                }}
-              >
+              <Typography variant="body2" className="job-details-head">
                 About Company:
-              </p>
+              </Typography>
               <Box
                 sx={{
                   whiteSpace: "pre-wrap",
@@ -142,25 +160,47 @@ export default function DashboardCard({ data }) {
             </Box>
           </Box>
           <Box>
-            <a>Show More</a>
+            <a className="job-details-link" onClick={handleOpen}>
+              View Job
+            </a>
           </Box>
-          {
+          {data.minExp && (
             <div className="info-container">
               <h3>Minimum Experience</h3>
-              <h2>{data.minExp ? data.minExp : "0"} years</h2>
+              <h2>{data.minExp + " years"}</h2>
             </div>
-          }
+          )}
         </CardContent>
         <Box
           sx={{ padding: "0 15px", display: "flex", flexDirection: "column" }}
         >
           <Box>
             <Button size="medium" className="easy-apply">
-              Easy Apply
+              &#9889;&nbsp;Easy Apply
             </Button>
           </Box>
+          <Button className="referral-button">
+            <Box className="avatar-box">
+              <Avatar
+                alt="Remy Sharp"
+                src="/static/images/avatar/1.jpg"
+                className="avatar-img"
+              />
+              <Typography className="referral-content">
+                Ask for Referral
+              </Typography>
+            </Box>
+          </Button>
         </Box>
       </Card>
+      <Modal
+        open={openModal}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalContent data={data} />
+      </Modal>
     </>
   );
 }

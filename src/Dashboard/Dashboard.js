@@ -3,6 +3,7 @@ import { CircularProgress, Grid, Paper } from "@mui/material";
 import { useEffect, useState } from "react";
 import DashboardCard from "./DashboardCard";
 import DashboardFilters from "./DashboardFilters";
+import NoJobsFound from "./NoJobsFound";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -12,7 +13,9 @@ const Item = styled(Paper)(({ theme }) => ({
   borderRadius: "20px",
   textAlign: "center",
   color: theme.palette.text.secondary,
-  maxWidth: "360px",
+  maxWidth: "460px", //default width was 360px. I have changed it in order to fit it properly on the page.
+  marginTop: "8px",
+  height: "615px",
 }));
 
 export default function Dashboard() {
@@ -29,12 +32,36 @@ export default function Dashboard() {
     minJdSalary: -1,
     minExp: -1,
   }); //Represents all the filters available
+
   useEffect(() => {
     //handleScroll();
     fetchData();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  //this useEffect checks if the content fits in the viewport(No scroll possible). This will trigger the api once again as the user can't scroll further and will keep triggering it till the content exceeds the document height.
+  //the above case is not valid if user has applied some filters. In that case, user will stay there without loading additional data.
+  useEffect(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight &&
+      !Object.keys(allFilters).some(
+        (val) =>
+          (Array.isArray(allFilters[val]) && allFilters[val].length > 0) ||
+          (!Array.isArray(allFilters[val]) &&
+            allFilters[val] !== "" &&
+            allFilters[val] !== -1) ||
+          (!Array.isArray(allFilters[val]) &&
+            allFilters[val] !== -1 &&
+            allFilters[val] !== ""),
+      ) &&
+      //Comment this line if it is not required to stop the api calls if the filters are applied but no data was found in the given results. I'm now un-commenting it because of the requirements of the task. Have also removed No data state
+      !checkNoData(allFilters, filteredJdData)
+    ) {
+      setIsLoading(true);
+    }
+  }, [filteredJdData]);
 
   //every time the loading state changes, I'm calling this useEffect which fetches the new data from the api.
   useEffect(() => {
@@ -109,6 +136,26 @@ export default function Dashboard() {
 
       .catch((error) => console.error(error));
   };
+
+  //this function checks if there is no data after applying the filters.
+  const checkNoData = (allFilters, filteredJdData) => {
+    //first condition checks if there is no filtered data found
+    //second conditon checks if at least one filter is applied(i.e. not equal to [], "" or -1). This means if the filter was applied and no data was found, we show No data message
+    return (
+      filteredJdData.jdList &&
+      filteredJdData.jdList.length === 0 &&
+      Object.keys(allFilters).some(
+        (val) =>
+          (Array.isArray(allFilters[val]) && allFilters[val].length > 0) ||
+          (!Array.isArray(allFilters[val]) &&
+            allFilters[val] !== "" &&
+            allFilters[val] !== -1) ||
+          (!Array.isArray(allFilters[val]) &&
+            allFilters[val] !== -1 &&
+            allFilters[val] !== ""),
+      )
+    );
+  };
   if (!isDataFetched) {
     return <CircularProgress />;
   } else {
@@ -122,39 +169,33 @@ export default function Dashboard() {
           allFilters={allFilters}
           setAllFilters={setAllFilters}
         />
-        <Grid container spacing={3}>
-          {filteredJdData.jdList && filteredJdData.jdList.length > 0
-            ? filteredJdData.jdList.map((val) => {
-                return (
-                  <Grid item xs={12} md={6} lg={4}>
-                    <Item className="main-item">
-                      <DashboardCard data={val} />
-                    </Item>
-                  </Grid>
-                );
-              })
-            : Object.keys(allFilters).some(
-                  (val) =>
-                    (Array.isArray(allFilters[val]) &&
-                      allFilters[val].length > 0) ||
-                    (!Array.isArray(allFilters[val]) &&
-                      allFilters[val] !== "" &&
-                      allFilters[val] !== -1) ||
-                    (!Array.isArray(allFilters[val]) &&
-                      allFilters[val] !== -1 &&
-                      allFilters[val] !== ""),
-                )
-              ? "No data"
-              : jdData.jdList.map((val) => {
-                  return (
-                    <Grid item xs={12} md={6} lg={4}>
-                      <Item className="main-item">
-                        <DashboardCard data={val} />
-                      </Item>
-                    </Grid>
-                  );
-                })}
+        <Grid container spacing={3} style={{ padding: "0 20px 20px" }}>
+          {filteredJdData.jdList && filteredJdData.jdList.length > 0 ? (
+            filteredJdData.jdList.map((val) => {
+              return (
+                <Grid item xs={12} md={6} lg={4}>
+                  <Item className="main-item">
+                    <DashboardCard data={val} />
+                  </Item>
+                </Grid>
+              );
+            })
+          ) : checkNoData(allFilters, filteredJdData) ? (
+            <NoJobsFound />
+          ) : (
+            jdData.jdList.map((val) => {
+              return (
+                <Grid item xs={12} md={6} lg={4}>
+                  <Item className="main-item">
+                    <DashboardCard data={val} />
+                  </Item>
+                </Grid>
+              );
+            })
+          )}
         </Grid>
+        {console.log("Is loading: ", isLoading)}
+        {isLoading && <CircularProgress sx={{ marginTop: "20px" }} />}
       </>
     );
   }

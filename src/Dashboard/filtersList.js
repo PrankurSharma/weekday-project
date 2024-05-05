@@ -219,6 +219,7 @@ let locationsList = [
   "Chennai",
   "Kolkata",
   "Pune",
+  "Remote",
 ];
 
 let typesList = ["On-site", "Remote"];
