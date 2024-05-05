@@ -40,10 +40,21 @@ export default function Dashboard() {
   }, []);
 
   //this useEffect checks if the content fits in the viewport(No scroll possible). This will trigger the api once again as the user can't scroll further and will keep triggering it till the content exceeds the document height.
+  //the above case is not valid if user has applied some filters. In that case, user will stay there without loading additional data.
   useEffect(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
         document.documentElement.offsetHeight &&
+      !Object.keys(allFilters).some(
+        (val) =>
+          (Array.isArray(allFilters[val]) && allFilters[val].length > 0) ||
+          (!Array.isArray(allFilters[val]) &&
+            allFilters[val] !== "" &&
+            allFilters[val] !== -1) ||
+          (!Array.isArray(allFilters[val]) &&
+            allFilters[val] !== -1 &&
+            allFilters[val] !== ""),
+      ) &&
       //Comment this line if it is not required to stop the api calls if the filters are applied but no data was found in the given results. I'm now un-commenting it because of the requirements of the task. Have also removed No data state
       !checkNoData(allFilters, filteredJdData)
     ) {
@@ -128,7 +139,7 @@ export default function Dashboard() {
   //this function checks if there is no data after applying the filters.
   const checkNoData = (allFilters, filteredJdData) => {
     //first condition checks if there is no filtered data found
-    //second conditon checks if at least filter is applied(i.e. not equal to [], "" or -1). This means if the filter was applied and no data was found, we show No data message
+    //second conditon checks if at least one filter is applied(i.e. not equal to [], "" or -1). This means if the filter was applied and no data was found, we show No data message
     return (
       filteredJdData.jdList &&
       filteredJdData.jdList.length === 0 &&
