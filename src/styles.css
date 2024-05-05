@@ -36,8 +36,11 @@
   transform: scale(1.01);
 }
 .main-card {
-  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   box-shadow: none !important;
+  height: inherit;
 }
 
 .MuiAutocomplete-root .MuiAutocomplete-tag {

@@ -14,6 +14,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
   maxWidth: "360px",
   marginTop: "8px",
+  height: "539.55px",
 }));
 
 export default function Dashboard() {

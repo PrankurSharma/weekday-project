@@ -68,42 +68,53 @@ export default function DashboardCard({ data }) {
                 >
                   {data.companyName}
                 </Box>
-                <h2
+                {data.jobRole && (
+                  <h2
+                    style={{
+                      fontSize: "14px",
+                      lineHeight: "1.5",
+                      width: "fit-content",
+                    }}
+                  >
+                    {data.jobRole}
+                  </h2>
+                )}
+              </div>
+              {data.location && (
+                <p
                   style={{
-                    fontSize: "14px",
-                    lineHeight: "1.5",
+                    fontSize: "11px",
+                    fontWeight: "500",
+                    marginTop: "5px",
+                    marginBottom: "0px",
                     width: "fit-content",
                   }}
                 >
-                  {data.jobRole ? data.jobRole : "NA"}
-                </h2>
-              </div>
-              <p
-                style={{
-                  fontSize: "11px",
-                  fontWeight: "500",
-                  marginTop: "5px",
-                  marginBottom: "0px",
-                  width: "fit-content",
-                }}
-              >
-                {data.location ? data.location : "NA"}
-              </p>
+                  {data.location}
+                </p>
+              )}
             </div>
           </Box>
           <p
             className="MuiTypography-root MuiTypography-body2"
             style={{
               fontSize: "14px",
-              margin: "8px 0",
+              margin: "10px 0",
               fontWeight: "400",
               color: "rgb(77, 89, 106)",
               lineHeight: "1.43",
               width: "fit-content",
             }}
           >
-            Estimated Salary: {data.minJdSalary ? "$" + data.minJdSalary : "NA"}
-            &nbsp; -&nbsp;{data.maxJdSalary ? data.maxJdSalary : "NA"}
+            Estimated Salary:{" "}
+            {data.minJdSalary
+              ? "$" + data.minJdSalary + `${data.maxJdSalary ? " - " : ""}`
+              : ""}
+            {data.maxJdSalary
+              ? data.minJdSalary
+                ? data.maxJdSalary
+                : "$" + data.maxJdSalary
+              : ""}
           </p>
           <Box
             sx={{
@@ -136,19 +147,19 @@ export default function DashboardCard({ data }) {
                   fontSize: "14px",
                 }}
               >
-                {data.jobDetailsFromCompany ? data.jobDetailsFromCompany : "NA"}
+                {data.jobDetailsFromCompany}
               </Box>
             </Box>
           </Box>
           <Box>
             <a>Show More</a>
           </Box>
-          {
+          {data.minExp && (
             <div className="info-container">
               <h3>Minimum Experience</h3>
-              <h2>{data.minExp ? data.minExp + "years" : "NA"}</h2>
+              <h2>{data.minExp + " years"}</h2>
             </div>
-          }
+          )}
         </CardContent>
         <Box
           sx={{ padding: "0 15px", display: "flex", flexDirection: "column" }}
